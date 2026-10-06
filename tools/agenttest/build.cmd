@@ -14,7 +14,7 @@ set REFS=-r:"%FW2%\mscorlib.dll" -r:"%FW2%\System.dll" -r:%BC%
 cd /d "%~dp0"
 call ..\..\vendor\build-bc.cmd || exit /b 1
 if not exist out\phone mkdir out\phone
-for %%t in (AgentTest WebVisionTest) do (
+for %%t in (AgentTest WebVisionTest TrimTest) do (
   "%CSC%" -nologo -noconfig -nostdlib -target:exe -optimize -out:out\%%t.exe %REFS% %%t.cs %SRC% || exit /b 1
 )
 copy /y %BC% out\ > nul

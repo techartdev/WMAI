@@ -46,7 +46,10 @@ namespace WMAI
 
     public class Agent
     {
-        const int MaxHistory = 60; // messages kept (proper trimming: step 4)
+        // History budget in characters (sent with every request, so it costs
+        // bandwidth on slow links and memory on the phone); see TrimHistory.
+        const int MaxHistoryChars = 150000;
+        const int KeepToolResults = 8; // newest tool results are never shortened
 
         readonly AgentConfig cfg;
         readonly Tools tools;
@@ -124,7 +127,8 @@ namespace WMAI
                     // (verified with DeepSeek: tool -> user[image] -> assistant works).
                     if (images.Count > 0) history.Add(ImageMessage(images));
                 }
-                if (step == maxSteps) Show("\n[stopped after " + maxSteps + " steps]");
+                if (step == maxSteps)
+                    Show("\n[paused after " + maxSteps + " steps - say \"continue\" to let it go on; it keeps all context]");
             }
             catch (Exception ex)
             {
@@ -341,10 +345,59 @@ namespace WMAI
         // Keep the newest messages, starting at a user message.
         void Trim()
         {
-            if (history.Count <= MaxHistory) return;
-            int cut = history.Count - MaxHistory;
-            while (cut < history.Count && (string)((Hashtable)history[cut])["role"] != "user") cut++;
-            history.RemoveRange(0, cut);
+            TrimHistory(history, MaxHistoryChars, KeepToolResults);
+        }
+
+        // Keeps the conversation within budget without ever losing the current
+        // turn (a long coding turn is one user message followed by dozens of
+        // assistant/tool messages - the old count-based cut, which looked for a
+        // later user message to start at, deleted everything in that case).
+        //  1. Old tool results are shortened to a stub first: the model keeps
+        //     the record of what it did, just not every byte of output.
+        //  2. Then whole turns are dropped, oldest first; never the last one.
+        internal static void TrimHistory(ArrayList h, int maxChars, int keepRecentTools)
+        {
+            if (Size(h) <= maxChars) return;
+
+            int toolsSeen = 0;
+            for (int i = h.Count - 1; i >= 0 && Size(h) > maxChars; i--)
+            {
+                Hashtable m = (Hashtable)h[i];
+                if ((string)m["role"] != "tool") continue;
+                if (++toolsSeen <= keepRecentTools) continue;
+                string c = m["content"] as string;
+                if (c != null && c.Length > 300)
+                    m["content"] = c.Substring(0, 200) + "\n...[" + (c.Length - 200) + " chars trimmed from history]";
+            }
+
+            while (Size(h) > maxChars)
+            {
+                int next = -1; // start of the second turn
+                for (int i = 1; i < h.Count && next < 0; i++)
+                    if (IsTurnStart((Hashtable)h[i])) next = i;
+                if (next < 0) break; // only the current turn is left: keep it
+                h.RemoveRange(0, next);
+            }
+        }
+
+        static bool IsTurnStart(Hashtable m)
+        {
+            return (string)m["role"] == "user" && m["content"] is string; // not a tool's image message
+        }
+
+        static int Size(ArrayList h)
+        {
+            int n = 0;
+            foreach (Hashtable m in h)
+            {
+                string c = m["content"] as string;
+                if (c != null) n += c.Length;
+                ArrayList calls = m["tool_calls"] as ArrayList;
+                if (calls != null)
+                    foreach (Hashtable call in calls)
+                        n += ((string)((Hashtable)call["function"])["arguments"]).Length + 50;
+            }
+            return n;
         }
 
         public void NewChat()

@@ -23,7 +23,7 @@ namespace WMAI
 {
     public class MainForm : Form
     {
-        const string Version = "0.7.1";
+        const string Version = "0.7.2";
         static readonly float[] FontSizes = new float[] { 8f, 9f, 10f, 12f };
         const int MaxLogChars = 24000; // keep the edit control responsive
 
