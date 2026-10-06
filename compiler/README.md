@@ -1,8 +1,14 @@
-# The on-device compiler
+# The on-device compiler: PocketGCC-WMAI
 
-WMAI's coding tools build native ARM apps on the phone with
-[PocketGCC](https://sourceforge.net/projects/pocketgcc/) 1.50 — GCC 3.2.2 and
-binutils 2.13.2.1 ported to run on Windows CE (2003).
+WMAI's coding tools build native ARM apps on the phone with **PocketGCC-WMAI**,
+WMAI's own build of [PocketGCC](https://sourceforge.net/projects/pocketgcc/)
+1.50 — GCC 3.2.2 and binutils 2.13.2.1 ported to run on Windows CE (2003).
+
+It ships ready to use in the release kit (`pgcc` folder: PocketGCC's headers,
+libraries and samples, with the rebuilt tools in `pgcc\wmai`). **The original
+PocketGCC tools do not work with WMAI** — they cannot report errors to a
+calling program (below) — so don't replace the kit's compiler with the
+SourceForge package.
 
 ## Why the tools are rebuilt
 
@@ -45,11 +51,13 @@ then exits 1 without output.
 
 The release kit already contains the rebuilt tools. To build them yourself:
 
-1. Get PocketGCC's source package,
-   `pocketgcc-3.2.2-binutils-2.13.2.1-20031121-src`, from
-   [SourceForge](https://sourceforge.net/projects/pocketgcc/files/), and unpack
-   it; you need its `pgcc-src` folder.
-2. Apply the change:
+1. Get the source. Easiest: `pocketgcc-wmai-src-<version>.zip` from WMAI's
+   [releases](https://github.com/techartdev/WMAI/releases) — PocketGCC's source tree with this patch
+   already applied; unpack it and use its `pgcc-src` folder (skip step 2).
+   Or start from the upstream package,
+   `pocketgcc-3.2.2-binutils-2.13.2.1-20031121-src` on
+   [SourceForge](https://sourceforge.net/projects/pocketgcc/files/).
+2. Upstream source only — apply the change:
    ```
    python compiler\apply_wce_stdio.py path\to\pgcc-src
    ```

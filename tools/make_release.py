@@ -4,9 +4,12 @@ plus the GPL source archive of the compiler tools it ships.
   python tools/make_release.py [--pgcc-zip PATH] [--pgcc-src PATH] [--tools DIR]
 
   --pgcc-zip  PocketGCC 1.50 device package (pocketgcc-1.50-20031108-arm.zip,
-              from https://sourceforge.net/projects/pocketgcc/)
-  --pgcc-src  PocketGCC source tree folder "pgcc-src" from
-              pocketgcc-3.2.2-binutils-2.13.2.1-20031121-src (same project)
+              from https://sourceforge.net/projects/pocketgcc/): only its
+              headers, libraries and samples are used, not its 2003 tools
+  --pgcc-src  PocketGCC source tree folder "pgcc-src": from a WMAI release's
+              pocketgcc-wmai-src zip, or the upstream
+              pocketgcc-3.2.2-binutils-2.13.2.1-20031121-src (the WMAI patch
+              is applied either way; it is idempotent)
   --tools     the six tools rebuilt with compiler/apply_wce_stdio.py
               (cc1plus.n.exe, cpp0.n.exe, as.n.exe, ld.n.exe, windres.n.exe,
               ar.n.exe); see compiler/README.md

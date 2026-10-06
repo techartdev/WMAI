@@ -18,7 +18,10 @@ Install
 1. Copy everything inside the "Storage Card" folder of this kit to the root
    of the phone's storage card, so that you get:
        \Storage Card\WMAI\   the app
-       \Storage Card\pgcc\   the C++ compiler used by the coding tools
+       \Storage Card\pgcc\   PocketGCC-WMAI, the C++ compiler used by the
+                             coding tools (WMAI's own build of PocketGCC -
+                             do not replace it with the original PocketGCC,
+                             which cannot report compile errors to WMAI)
    If your card has another name (for example "SD Card"), use it instead -
    WMAI finds pgcc and creates "Projects" on the same card as itself. Keep
    both folders at the root of the same card.

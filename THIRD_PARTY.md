@@ -38,8 +38,8 @@ The on-device compiler, by Vitaliy Pronkin and contributors,
 <https://sourceforge.net/projects/pocketgcc/>. GCC and binutils are licensed
 under the GNU GPL (version 2 or later).
 
-The release kit ships `cc1plus`, `cpp0`, `as`, `ld`, `windres` and `ar`
-**rebuilt by WMAI** from PocketGCC's source package with the change in
+The release kit ships PocketGCC-WMAI: `cc1plus`, `cpp0`, `as`, `ld`,
+`windres` and `ar` **rebuilt by WMAI** from PocketGCC's source package with the change in
 [compiler/](compiler/) (`--stdout=FILE` / `--stderr=FILE`). Their complete
 corresponding source is published with every release as
 `pocketgcc-wmai-src-<version>.zip` (PocketGCC's source tree with the WMAI

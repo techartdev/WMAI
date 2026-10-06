@@ -58,7 +58,7 @@ the phone first (Yes/No). The coding tools ask once per project and session.
 │  pimstore/cemapi, GDI; web; compiler     │
 │              │                           │
 │              ▼                           │
-│  PocketGCC 3.2.2 (cc1plus, as, ld, ...)  │
+│  PocketGCC-WMAI: GCC 3.2.2 for WinCE,    │
 │  rebuilt with --stdout/--stderr          │
 └──────────────────────────────────────────┘
 ```
@@ -69,12 +69,14 @@ the phone first (Yes/No). The coding tools ask once per project and session.
   and keeps one connection alive (first handshake ~5 s, later requests ~0.3 s).
 * **Vision.** With a vision model (default: `deepseek-flash`), `screenshot`
   captures the screen to PNG and attaches it to the conversation.
-* **On-device compiler.** PocketGCC (GCC 3.2.2/binutils 2.13 for ARM WinCE,
-  2003) runs on the phone. Windows CE cannot redirect a child process's output,
-  so its error messages were invisible; WMAI ships the tools **rebuilt from
-  source** with `--stdout=FILE` / `--stderr=FILE` options (see
-  [compiler/](compiler/README.md)), which gives the agent real compiler errors
-  to fix.
+* **On-device compiler: PocketGCC-WMAI.** The compiler is WMAI's own build of
+  [PocketGCC](https://sourceforge.net/projects/pocketgcc/) (GCC 3.2.2/binutils
+  2.13 for ARM WinCE, 2003). Windows CE cannot redirect a child process's
+  output, so the original tools' error messages never reach a calling program;
+  WMAI's build adds `--stdout=FILE` / `--stderr=FILE` options to every tool,
+  which gives the agent real compiler errors to fix (see
+  [compiler/](compiler/README.md)). The original PocketGCC does not work with
+  WMAI — use the `pgcc` folder from the release kit.
 * **No Visual Studio needed to build.** The app is compiled with the desktop C#
   compiler against .NET 2.0 and retargeted to NETCF 3.5 by rewriting its
   assembly references; `tools/cfcheck.ps1` checks every API it uses against the
@@ -96,8 +98,9 @@ You need:
 Then:
 
 1. Download `WMAI-<version>-sdcard.zip` from the
-   [releases](../../releases) and copy the contents of its `Storage Card`
-   folder to the root of the phone's SD card (you get `WMAI\` and `pgcc\`).
+   [releases](https://github.com/techartdev/WMAI/releases) and copy the contents of its `Storage Card`
+   folder to the root of the phone's SD card (you get `WMAI\` and `pgcc\`, the
+   PocketGCC-WMAI compiler — nothing else to install).
 2. In `WMAI\`, copy `WMAI.config.example` to `WMAI.config` and put your API key
    in it.
 3. Start `WMAI\WMAI.exe` from File Explorer. Type, press Enter or **Send**.
@@ -120,7 +123,7 @@ welcome as issues.
 |---|---|
 | `app/` | The phone app: `WMAI.cs` (UI), `Agent.cs` (agent loop), `Https.cs` (TLS + HTTP), `Tools.cs`, `CodeTools.cs`, `Web.cs`, `ImageTools.cs`, `Json.cs`; project templates; build scripts |
 | `relay/` | Optional PC relay (Python, stdlib only): plain-HTTP chat for USB development, over-the-air app updates. `tools.py` holds the system prompt and all tool definitions, exported to `WMAI.agent.json` for the phone |
-| `compiler/` | The PocketGCC `--stdout/--stderr` patch and how to rebuild the compiler (needs Windows XP) |
+| `compiler/` | PocketGCC-WMAI: the `--stdout/--stderr` patch to PocketGCC and how to rebuild the compiler (needs Windows XP) |
 | `vendor/` | Bouncy Castle: download + NETCF patch + build script |
 | `tools/` | PC tooling: `wm.py` (files/registry/processes on the phone over RAPI), `cfcheck.ps1`, `make_release.py`, root bundle builder, tests |
 | `docs/` | Install guide and development notes |
@@ -136,9 +139,13 @@ tools\rootindex\build.cmd        builds app\WMAI.roots.idx from Mozilla's CA bun
 python tools\make_release.py     builds the SD-card kit in release\
 ```
 
-`make_release.py` also needs PocketGCC 1.50 and its source package from
-[SourceForge](https://sourceforge.net/projects/pocketgcc/), and the rebuilt
-compiler tools (see [compiler/README.md](compiler/README.md)).
+You don't need to rebuild the compiler to change WMAI: the release kit's `pgcc`
+folder works with any WMAI build. To rebuild PocketGCC-WMAI itself, start from
+`pocketgcc-wmai-src-<version>.zip` in the [releases](https://github.com/techartdev/WMAI/releases) (the
+complete source with the WMAI patch applied) and follow
+[compiler/README.md](compiler/README.md). `make_release.py` additionally takes
+the headers and libraries from the original PocketGCC 1.50 device package on
+[SourceForge](https://sourceforge.net/projects/pocketgcc/files/).
 
 With the phone connected through Windows Mobile Device Center,
 `python tools\wm.py push|pull|ls|run ...` deploys and inspects without
