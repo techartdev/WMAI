@@ -1,11 +1,14 @@
-# WMAI — an AI agent on a 2007 Windows Mobile phone
+# WMAI — Windows Mobile AI
 
-WMAI runs a modern AI agent on a **Windows Mobile 5 Pocket PC** (ARM, 200 MHz,
-44 MB RAM, .NET Compact Framework 3.5). The phone talks to the model API
-**directly**, with TLS 1.2 implemented inside the app, and the agent uses the
-phone itself through 26 tools: files, registry, processes, contacts, SMS,
-calls, the web, the screen (vision) — and an **on-device C++ compiler**, so you
-can ask it to write, build, debug and run native apps on the phone.
+A self-contained AI agent for **Windows Mobile 5/6 Pocket PCs**. WMAI talks to
+a modern model API directly from the phone — TLS 1.2 is built into the app, so
+there is no PC and no proxy — and the agent works through 26 tools on the
+device itself: files, registry, processes, contacts, SMS, calls, the web, the
+screen (vision), and an **on-device C++ compiler**, so you can ask it to write,
+build, debug and run native apps right on the phone.
+
+It needs nothing beyond what these phones already had: .NET Compact Framework
+3.5, a storage card and an internet connection (even GPRS will do).
 
 ```
 You: Make me a notes app: a text area, the left soft key saves to
@@ -97,6 +100,15 @@ Then:
 Details, including other storage card names and a shortcut, are in
 [docs/INSTALL.txt](docs/INSTALL.txt).
 
+### Tested on
+
+Developed and tested on a Windows Mobile 5 Pocket PC Phone Edition (ARM926T at
+200 MHz, 44 MB RAM, 240x320 touch screen). Other Windows Mobile 5/6 Pocket PCs
+(Classic/Professional, ARM) with .NET CF 3.5 should work — the app finds its
+storage card, compiler and projects wherever it is installed. Smartphone
+(Standard, non-touch) editions are untested. Reports from other devices are
+welcome as issues.
+
 ## Repository layout
 
 | Path | Contents |
@@ -137,7 +149,8 @@ the compiler was rebuilt.
 * The first message of a session waits 5–8 s for the TLS handshake; every
   `.cpp` file takes ~45 s to compile (mostly `windows.h`).
 * Images work in direct mode only (not through the relay).
-* Free RAM is tight (~10 MB with the crypto library loaded).
+* Memory is tight on 64 MB-class phones: about 10 MB stays free with the
+  crypto library loaded.
 
 ## License
 
