@@ -1,5 +1,10 @@
 # WMAI — Windows Mobile AI
 
+<p align="center">
+  <img src="docs/images/wmai-phone.jpg" width="360"
+       alt="WMAI chatting on a Windows Mobile 5 Pocket PC: the agent describes the phone it runs on">
+</p>
+
 A self-contained AI agent for **Windows Mobile 5/6 Pocket PCs**. WMAI talks to
 a modern model API directly from the phone — TLS 1.2 is built into the app, so
 there is no PC and no proxy — and the agent works through 26 tools on the
