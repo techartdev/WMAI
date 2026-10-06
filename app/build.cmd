@@ -10,7 +10,7 @@ set CSC=C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe
 cd /d "%~dp0"
 call ..\vendor\build-bc.cmd || exit /b 1
 python ..\relay\tools.py WMAI.agent.json || exit /b 1
-"%CSC%" -nologo -noconfig -nostdlib -target:winexe -platform:anycpu -optimize -out:WMAI.exe ^
+"%CSC%" -nologo -noconfig -nostdlib -target:winexe -platform:anycpu -optimize -out:WMAI.exe -win32icon:WMAI.ico ^
   -r:"%FW2%\mscorlib.dll" -r:"%FW2%\System.dll" -r:"%FW2%\System.Drawing.dll" -r:"%FW2%\System.Windows.Forms.dll" ^
   -r:..\vendor\out\ref\BouncyCastle.Crypto.dll ^
   WMAI.cs Tools.cs CodeTools.cs Web.cs ImageTools.cs Https.cs Json.cs Agent.cs || exit /b 1
