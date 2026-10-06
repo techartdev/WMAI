@@ -1,0 +1,6 @@
+* text=auto
+# CMD needs CRLF (labels and goto misbehave with LF)
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.exe binary
+*.dll binary

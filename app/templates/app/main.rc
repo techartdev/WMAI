@@ -1,0 +1,29 @@
+// Resources: the soft-key menu bar. Keep this file ASCII.
+#include "resource.h"
+#include "newres.h"
+
+// Two soft keys. Fields per button: image, command id, state, style,
+// caption string id, 0, popup index in the MENU below (NOMENU = none).
+IDR_MENUBAR SHMENUBAR DISCARDABLE
+BEGIN
+    IDR_MENUBAR, 2,
+    I_IMAGENONE, IDM_LEFT, TBSTATE_ENABLED, TBSTYLE_BUTTON | TBSTYLE_AUTOSIZE, IDS_LEFT, 0, NOMENU,
+    I_IMAGENONE, IDM_MENU, TBSTATE_ENABLED, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_MENU, 0, 0
+END
+
+// Popup for the right soft key (index 0 above).
+IDR_MENUBAR MENU DISCARDABLE
+BEGIN
+    POPUP "Menu"
+    BEGIN
+        MENUITEM "About", IDM_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "Exit", IDM_EXIT
+    END
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_LEFT "Clear"
+    IDS_MENU "Menu"
+END

@@ -1,0 +1,18 @@
+# WMAI configuration. Copy this file to WMAI.config next to WMAI.exe and fill
+# in your API key. With a key, the phone talks to the AI provider itself (TLS 1.2
+# built into WMAI); without this file WMAI falls back to the optional PC relay.
+#
+# Any OpenAI-compatible chat completions endpoint works. Vision (screenshot,
+# view_image) needs a model that accepts images.
+
+# DeepSeek (default): https://platform.deepseek.com
+host=api.deepseek.com
+path=/chat/completions
+model=deepseek-flash
+key=PUT-YOUR-API-KEY-HERE
+
+# OpenRouter instead (https://openrouter.ai), e.g.:
+# host=openrouter.ai
+# path=/api/v1/chat/completions
+# model=google/gemini-3.1-flash-lite
+# key=sk-or-...

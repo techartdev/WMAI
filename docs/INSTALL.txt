@@ -1,0 +1,54 @@
+WMAI - installation on the phone
+================================
+
+Requirements
+------------
+- Windows Mobile 5 or 6 Pocket PC with an ARM processor (developed on WM5;
+  WM6 is untested) and a storage card.
+- Microsoft .NET Compact Framework 3.5 installed on the phone
+  ("NET Compact Framework 3.5 Redistributable" from Microsoft).
+- Internet on the phone: Wi-Fi, GPRS/3G, Bluetooth PAN, or USB pass-through
+  through ActiveSync / Windows Mobile Device Center.
+- An API key for an OpenAI-compatible chat completions API. The default is
+  DeepSeek with the model deepseek-flash, which also accepts images.
+- The phone's date and time must be correct: certificate checks use them.
+
+Install
+-------
+1. Copy everything inside the "Storage Card" folder of this kit to the root
+   of the phone's storage card, so that you get:
+       \Storage Card\WMAI\   the app
+       \Storage Card\pgcc\   the C++ compiler used by the coding tools
+   If your card has another name (for example "SD Card"), use it instead -
+   WMAI finds pgcc and creates "Projects" on the same card as itself. Keep
+   both folders at the root of the same card.
+2. In the WMAI folder, copy WMAI.config.example to WMAI.config and replace
+   PUT-YOUR-API-KEY-HERE with your key. Other providers: see the comments in
+   the file.
+3. Start WMAI.exe from File Explorer. The first line shows the version and
+   "direct: <model>". Type a message and press Enter or the Send soft key.
+   The first answer takes 5-10 s while the secure connection is set up.
+
+Optional: a Start menu entry. In File Explorer, tap and hold WMAI.exe, choose
+Copy, go to \Windows\Start Menu\Programs and choose Paste Shortcut.
+
+Using it
+--------
+- Menu > New chat, Reload chat, Text size, Exit.
+- Ask for things on the phone ("how much battery do I have?", "show my last
+  SMS", "what's on my storage card?"), on the web ("search for...", "open
+  ..."), or on the screen ("take a screenshot and tell me what you see").
+- Coding: "make me a notes app called notes ...". Projects are stored in
+  \Storage Card\Projects. The first change to a project asks you once; each
+  build takes about a minute; the finished program is started with your
+  permission.
+- Anything that sends, dials, deletes, overwrites, launches or kills asks you
+  first.
+
+Notes
+-----
+- Your API key is stored in plain text in WMAI.config on the storage card.
+- The chat history is kept in WMAI\WMAI.chat.json; screenshots are saved in
+  \My Documents\WMAI.
+- Without WMAI.config the app tries the optional PC relay instead (see the
+  project's README).

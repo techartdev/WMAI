@@ -1,0 +1,35 @@
+# Secrets and personal data - never commit
+relay/.env
+relay/chat.json
+relay/chat.json.tmp
+WMAI.config
+WMAI.chat.json
+WMAI.chat.json.tmp
+
+# Build outputs (app\build.cmd, tools\*\build.cmd, tools\make_release.py)
+app/WMAI.exe
+app/WMAI_new.exe
+app/WMAI.agent.json
+app/WMAI.roots.idx
+out/
+release/
+__pycache__/
+*.pyc
+
+# Downloaded or generated third-party files
+vendor/bc-csharp-release-1.8.10/
+vendor/out/
+vendor/*.zip
+tools/rootindex/cacert.pem
+tools/rootindex/*.exe
+tools/rootindex/*.dll
+# Microsoft binaries copied from your own phone by tools\pull_cfref.py
+tools/cfref/
+
+# Local working folders and upstream archives (see compiler\README.md)
+vm/
+MAPI/
+pocketgcc-*/
+pocketgcc-*.zip
+pocketgcc-*.rar
+*.application
